@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jella Rahul Yadav — Data Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020b18;
+    --bg2: #041225;
+    --bg3: #071e3d;
+    --cyan: #00f5ff;
+    --cyan2: #00bcd4;
+    --gold: #ffd700;
+    --pink: #ff2d78;
+    --purple: #7b2fff;
+    --green: #00ff88;
+    --text: #c8e6ff;
+    --muted: #5a8ab0;
+    --card: rgba(0,245,255,0.04);
+    --border: rgba(0,245,255,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Rajdhani',sans-serif;
+    font-size:16px;
+    overflow-x:hidden;
+    cursor:none;
+  }
+
+  /* Custom cursor */
+  #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s;mix-blend-mode:screen}
+  #cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease;opacity:0.5}
+
+  /* Scanlines overlay */
+  body::before{
+    content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
+    pointer-events:none;z-index:1;
+  }
+
+  /* Animated grid bg */
+  #grid-bg{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,245,255,0.04) 1px,transparent 1px);
+    background-size:60px 60px;
+    animation:gridMove 20s linear infinite;
+    pointer-events:none;z-index:0;
+  }
+  @keyframes gridMove{0%{background-position:0 0}100%{background-position:60px 60px}}
+
+  /* Nav */
+  nav{
+    position:fixed;top:0;left:0;width:100%;z-index:100;
+    background:rgba(2,11,24,0.9);
+    border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 2.5rem;height:60px;
+    backdrop-filter:blur(12px);
+  }
+  .nav-logo{
+    font-family:'Orbitron',sans-serif;
+    font-size:14px;font-weight:700;
+    color:var(--cyan);
+    letter-spacing:0.2em;
+    text-shadow:0 0 20px var(--cyan);
+  }
+  .nav-links{display:flex;gap:2rem}
+  .nav-links a{
+    font-family:'Rajdhani',sans-serif;
+    font-size:13px;font-weight:600;
+    color:var(--muted);
+    text-decoration:none;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    transition:color 0.2s;
+    position:relative;
+  }
+  .nav-links a::after{
+    content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+    background:var(--cyan);transition:width 0.3s;
+  }
+  .nav-links a:hover{color:var(--cyan)}
+  .nav-links a:hover::after{width:100%}
+
+  /* Hero */
+  #hero{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:2;padding:80px 2rem 2rem;
+  }
+  .hero-inner{text-align:center;max-width:800px}
+  .hero-tag{
+    display:inline-block;
+    font-family:'Share Tech Mono',monospace;
+    font-size:12px;color:var(--cyan);
+    border:1px solid var(--border);
+    padding:4px 14px;border-radius:2px;
+    margin-bottom:1.5rem;
+    animation:fadeDown 0.8s ease both;
+    letter-spacing:0.15em;
+  }
+  .hero-name{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(2.5rem,8vw,5rem);
+    font-weight:900;
+    line-height:1;
+    margin-bottom:0.5rem;
+    animation:fadeDown 0.9s ease 0.1s both;
+  }
+  .hero-name span.c{color:var(--cyan);text-shadow:0 0 40px var(--cyan),0 0 80px rgba(0,245,255,0.3)}
+  .hero-name span.g{color:var(--gold);text-shadow:0 0 40px var(--gold)}
+  .hero-title{
+    font-size:clamp(1rem,3vw,1.4rem);
+    font-weight:500;
+    color:var(--muted);
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    margin-bottom:2rem;
+    animation:fadeDown 1s ease 0.2s both;
+  }
+  .hero-stats{
+    display:flex;justify-content:center;gap:3rem;
+    margin-bottom:2.5rem;
+    animation:fadeDown 1s ease 0.3s both;
+    flex-wrap:wrap;
+  }
+  .stat{text-align:center}
+  .stat-num{
+    font-family:'Orbitron',sans-serif;
+    font-size:2rem;font-weight:700;
+    color:var(--cyan);
+    text-shadow:0 0 20px var(--cyan);
+    display:block;
+  }
+  .stat-num.gold{color:var(--gold);text-shadow:0 0 20px var(--gold)}
+  .stat-num.pink{color:var(--pink);text-shadow:0 0 20px var(--pink)}
+  .stat-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
+  .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeDown 1s ease 0.4s both}
+  .btn{
+    font-family:'Rajdhani',sans-serif;
+    font-size:13px;font-weight:700;
+    letter-spacing:0.15em;text-transform:uppercase;
+    padding:12px 28px;
+    text-decoration:none;
+    border-radius:2px;
+    transition:all 0.3s;
+    position:relative;overflow:hidden;
+  }
+  .btn-primary{
+    background:transparent;
+    color:var(--cyan);
+    border:1.5px solid var(--cyan);
+    box-shadow:0 0 20px rgba(0,245,255,0.2);
+  }
+  .btn-primary:hover{
+    background:var(--cyan);color:var(--bg);
+    box-shadow:0 0 40px rgba(0,245,255,0.6);
+  }
+  .btn-secondary{
+    background:transparent;color:var(--gold);
+    border:1.5px solid var(--gold);
+  }
+  .btn-secondary:hover{background:var(--gold);color:var(--bg)}
+
+  /* Section common */
+  section{position:relative;z-index:2;padding:80px 2rem}
+  .section-inner{max-width:1000px;margin:0 auto}
+  .section-header{
+    display:flex;align-items:center;gap:1rem;
+    margin-bottom:3rem;
+  }
+  .section-num{
+    font-family:'Share Tech Mono',monospace;
+    font-size:12px;color:var(--pink);letter-spacing:0.1em;
+  }
+  .section-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(1.2rem,3vw,1.8rem);
+    font-weight:700;color:var(--cyan);
+    text-shadow:0 0 20px rgba(0,245,255,0.4);
+    letter-spacing:0.1em;
+  }
+  .section-line{flex:1;height:1px;background:var(--border)}
+
+  /* Cards */
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:1.5rem;
+    position:relative;
+    overflow:hidden;
+    transition:border-color 0.3s,box-shadow 0.3s;
+  }
+  .card::before{
+    content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+    background:linear-gradient(180deg,var(--cyan),var(--purple));
+  }
+  .card:hover{
+    border-color:rgba(0,245,255,0.4);
+    box-shadow:0 0 30px rgba(0,245,255,0.1);
+  }
+
+  /* Skills section */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+  .skill-category{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:4px;padding:1.25rem;
+    transition:all 0.3s;cursor:pointer;
+  }
+  .skill-category:hover{border-color:rgba(0,245,255,0.4);box-shadow:0 0 20px rgba(0,245,255,0.08)}
+  .skill-cat-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:11px;font-weight:700;
+    color:var(--gold);letter-spacing:0.15em;
+    text-transform:uppercase;margin-bottom:0.75rem;
+  }
+  .skill-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .skill-tag{
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px;
+    padding:3px 10px;
+    border-radius:2px;
+    border:1px solid;
+    transition:all 0.2s;
+  }
+  .tag-cyan{color:var(--cyan);border-color:rgba(0,245,255,0.3);background:rgba(0,245,255,0.05)}
+  .tag-cyan:hover{background:rgba(0,245,255,0.15)}
+  .tag-purple{color:#c084fc;border-color:rgba(192,132,252,0.3);background:rgba(123,47,255,0.05)}
+  .tag-green{color:var(--green);border-color:rgba(0,255,136,0.3);background:rgba(0,255,136,0.05)}
+  .tag-pink{color:var(--pink);border-color:rgba(255,45,120,0.3);background:rgba(255,45,120,0.05)}
+  .tag-gold{color:var(--gold);border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.05)}
+
+  /* Experience timeline */
+  .timeline{position:relative;padding-left:2rem}
+  .timeline::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;
+    width:1px;background:linear-gradient(180deg,var(--cyan),var(--purple),transparent);
+  }
+  .timeline-item{
+    position:relative;margin-bottom:2.5rem;
+    opacity:0;transform:translateX(-20px);
+    transition:all 0.6s ease;
+  }
+  .timeline-item.visible{opacity:1;transform:translateX(0)}
+  .timeline-dot{
+    position:absolute;left:-2.4rem;top:6px;
+    width:12px;height:12px;border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 15px var(--cyan);
+    border:2px solid var(--bg);
+  }
+  .exp-company{
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;font-weight:700;
+    color:var(--gold);letter-spacing:0.1em;
+    margin-bottom:4px;
+  }
+  .exp-role{
+    font-size:1.1rem;font-weight:700;
+    color:var(--text);margin-bottom:4px;
+  }
+  .exp-meta{
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px;color:var(--muted);
+    margin-bottom:0.75rem;letter-spacing:0.05em;
+  }
+  .exp-client{
+    display:inline-block;
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px;
+    color:var(--cyan);
+    border:1px solid rgba(0,245,255,0.3);
+    padding:2px 10px;border-radius:2px;
+    margin-bottom:0.75rem;margin-right:6px;
+  }
+  .exp-achievements{list-style:none;padding:0}
+  .exp-achievements li{
+    font-size:14px;color:var(--text);
+    padding:5px 0 5px 1.2rem;
+    position:relative;line-height:1.5;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+  }
+  .exp-achievements li::before{
+    content:'▸';position:absolute;left:0;
+    color:var(--cyan);font-size:10px;top:7px;
+  }
+  .exp-achievements li strong{color:var(--cyan)}
+
+  /* Impact metrics */
+  .metrics-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:1rem;margin-bottom:3rem;
+  }
+  .metric-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:4px;padding:1.25rem;text-align:center;
+    position:relative;overflow:hidden;
+    transition:all 0.3s;
+  }
+  .metric-card::after{
+    content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    animation:shimmer 2s ease infinite;
+  }
+  @keyframes shimmer{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
+  .metric-card:hover{box-shadow:0 0 30px rgba(0,245,255,0.15);transform:translateY(-2px)}
+  .metric-num{
+    font-family:'Orbitron',sans-serif;
+    font-size:2rem;font-weight:900;
+    color:var(--cyan);
+    text-shadow:0 0 20px var(--cyan);
+    display:block;margin-bottom:4px;
+  }
+  .metric-num.gold{color:var(--gold);text-shadow:0 0 20px var(--gold)}
+  .metric-num.pink{color:var(--pink);text-shadow:0 0 20px var(--pink)}
+  .metric-num.green{color:var(--green);text-shadow:0 0 20px var(--green)}
+  .metric-desc{font-size:12px;color:var(--muted);line-height:1.4}
+
+  /* Certs */
+  .certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}
+  .cert-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:4px;padding:1.25rem;
+    display:flex;align-items:flex-start;gap:1rem;
+    transition:all 0.3s;
+    cursor:pointer;
+  }
+  .cert-card:hover{border-color:var(--gold);box-shadow:0 0 25px rgba(255,215,0,0.1);transform:translateY(-2px)}
+  .cert-icon{
+    width:44px;height:44px;border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;flex-shrink:0;
+    background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);
+  }
+  .cert-name{
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;font-weight:700;
+    color:var(--gold);margin-bottom:4px;line-height:1.4;
+  }
+  .cert-issuer{font-size:12px;color:var(--muted)}
+  .cert-badge{
+    display:inline-block;margin-top:6px;
+    font-family:'Share Tech Mono',monospace;
+    font-size:10px;padding:2px 8px;
+    border:1px solid rgba(0,255,136,0.4);
+    color:var(--green);border-radius:2px;
+  }
+
+  /* Projects */
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+  .project-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:4px;padding:1.5rem;
+    position:relative;overflow:hidden;
+    transition:all 0.3s;cursor:pointer;
+  }
+  .project-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--purple),var(--cyan),var(--pink));
+  }
+  .project-card:hover{border-color:rgba(0,245,255,0.4);box-shadow:0 10px 40px rgba(0,0,0,0.4),0 0 20px rgba(0,245,255,0.1);transform:translateY(-4px)}
+  .project-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:13px;font-weight:700;
+    color:var(--cyan);margin-bottom:8px;
+    text-shadow:0 0 10px rgba(0,245,255,0.3);
+  }
+  .project-stack{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+  .project-desc{font-size:13px;color:var(--muted);line-height:1.6}
+  .project-result{
+    margin-top:10px;padding:8px;
+    background:rgba(0,255,136,0.05);
+    border:1px solid rgba(0,255,136,0.15);
+    border-radius:2px;
+    font-size:12px;color:var(--green);
+  }
+
+  /* Contact / footer */
+  #contact{
+    padding:80px 2rem;
+    border-top:1px solid var(--border);
+    position:relative;z-index:2;
+  }
+  .contact-inner{max-width:600px;margin:0 auto;text-align:center}
+  .contact-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(1.5rem,4vw,2.5rem);
+    font-weight:900;color:var(--cyan);
+    text-shadow:0 0 40px rgba(0,245,255,0.4);
+    margin-bottom:1rem;
+  }
+  .contact-links{
+    display:flex;justify-content:center;gap:1rem;
+    flex-wrap:wrap;margin-top:2rem;
+  }
+  .contact-link{
+    font-family:'Share Tech Mono',monospace;
+    font-size:12px;color:var(--cyan);
+    border:1px solid var(--border);
+    padding:10px 20px;border-radius:2px;
+    text-decoration:none;
+    transition:all 0.3s;letter-spacing:0.1em;
+  }
+  .contact-link:hover{border-color:var(--cyan);background:rgba(0,245,255,0.08);box-shadow:0 0 20px rgba(0,245,255,0.2)}
+
+  /* Modal */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;z-index:500;
+    background:rgba(2,11,24,0.95);
+    backdrop-filter:blur(8px);
+    align-items:center;justify-content:center;
+    padding:1rem;
+  }
+  .modal-overlay.open{display:flex}
+  .modal{
+    background:var(--bg2);
+    border:1px solid var(--border);
+    border-radius:6px;
+    width:100%;max-width:650px;
+    max-height:85vh;overflow-y:auto;
+    position:relative;
+    animation:modalIn 0.3s ease;
+  }
+  @keyframes modalIn{from{opacity:0;transform:scale(0.95) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  .modal-header{
+    padding:1.5rem;
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;background:var(--bg2);z-index:1;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .modal-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:14px;font-weight:700;
+    color:var(--cyan);letter-spacing:0.1em;
+  }
+  .modal-close{
+    background:none;border:1px solid var(--border);color:var(--muted);
+    width:30px;height:30px;border-radius:2px;cursor:pointer;
+    font-size:16px;display:flex;align-items:center;justify-content:center;
+    transition:all 0.2s;
+  }
+  .modal-close:hover{border-color:var(--pink);color:var(--pink)}
+  .modal-body{padding:1.5rem}
+  .modal-body h3{
+    font-family:'Orbitron',sans-serif;font-size:12px;
+    color:var(--gold);letter-spacing:0.1em;margin-bottom:0.75rem;margin-top:1.25rem;
+  }
+  .modal-body h3:first-child{margin-top:0}
+  .modal-body p,.modal-body li{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:6px}
+  .modal-body ul{padding-left:1.2rem}
+  .modal-body li::marker{color:var(--cyan)}
+
+  /* Animations */
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Glitch text effect */
+  .glitch{position:relative}
+  .glitch::before,.glitch::after{
+    content:attr(data-text);
+    position:absolute;top:0;left:0;width:100%;height:100%;
+  }
+  .glitch::before{
+    color:var(--pink);animation:glitch1 3s infinite;clip-path:polygon(0 0,100% 0,100% 45%,0 45%);
+  }
+  .glitch::after{
+    color:var(--cyan);animation:glitch2 3s infinite;clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);
+  }
+  @keyframes glitch1{0%,90%,100%{transform:none;opacity:0}92%{transform:translateX(-3px);opacity:0.5}94%{transform:translateX(3px);opacity:0.5}96%{transform:none;opacity:0}}
+  @keyframes glitch2{0%,90%,100%{transform:none;opacity:0}91%{transform:translateX(3px);opacity:0.5}93%{transform:translateX(-3px);opacity:0.5}95%{transform:none;opacity:0}}
+
+  /* Scroll indicator */
+  .scroll-indicator{
+    position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    animation:fadeDown 1s ease 1s both;
+  }
+  .scroll-indicator span{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.15em}
+  .scroll-mouse{
+    width:22px;height:34px;border:1.5px solid var(--muted);border-radius:12px;
+    position:relative;
+  }
+  .scroll-wheel{
+    width:3px;height:6px;background:var(--cyan);border-radius:2px;
+    position:absolute;top:6px;left:50%;transform:translateX(-50%);
+    animation:scrollWheel 2s ease infinite;
+  }
+  @keyframes scrollWheel{0%{top:6px;opacity:1}100%{top:20px;opacity:0}}
+
+  /* Floating particles */
+  .particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .particle{
+    position:absolute;width:2px;height:2px;
+    background:var(--cyan);border-radius:50%;
+    animation:float linear infinite;
+    opacity:0;
+  }
+  @keyframes float{
+    0%{transform:translateY(100vh) translateX(0);opacity:0}
+    10%{opacity:0.6}
+    90%{opacity:0.3}
+    100%{transform:translateY(-10vh) translateX(100px);opacity:0}
+  }
+
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="grid-bg"></div>
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">JRY.DEV</div>
+  <div class="nav-links">
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#certifications">Certs</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">[ INITIALIZING PROFILE... READY ]</div>
+    <h1 class="hero-name">
+      <span class="c glitch" data-text="RAHUL">RAHUL</span><br>
+      <span class="g">YADAV</span>
+    </h1>
+    <div class="hero-title">Data Engineer &nbsp;/&nbsp; ETL Architect &nbsp;/&nbsp; AI Practitioner</div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Years Experience</span></div>
+      <div class="stat"><span class="stat-num gold">3</span><span class="stat-label">Fortune 500 Clients</span></div>
+      <div class="stat"><span class="stat-num pink">10M+</span><span class="stat-label">Records / Day</span></div>
+      <div class="stat"><span class="stat-num">99.9%</span><span class="stat-label">Pipeline Uptime</span></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#experience" class="btn btn-primary">View Experience</a>
+      <a href="mailto:jellarahulyadav1997@gmail.com" class="btn btn-secondary">Contact Me</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- IMPACT METRICS -->
+<section id="impact" style="padding-top:0">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">00.</div>
+      <div class="section-title">Quantified Impact</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card"><span class="metric-num">30%</span><div class="metric-desc">MTTR Reduction at T-Mobile via Splunk RCA</div></div>
+      <div class="metric-card"><span class="metric-num gold">99.9%</span><div class="metric-desc">Pipeline uptime across Snowflake & ADF</div></div>
+      <div class="metric-card"><span class="metric-num pink">40%</span><div class="metric-desc">Faster incident triage via RAG pipeline</div></div>
+      <div class="metric-card"><span class="metric-num green">10M+</span><div class="metric-desc">Financial records processed daily at MassMutual</div></div>
+      <div class="metric-card"><span class="metric-num">50%</span><div class="metric-desc">Manual effort reduced via workflow automation</div></div>
+      <div class="metric-card"><span class="metric-num gold">45%</span><div class="metric-desc">Faster data-to-insight at BCG</div></div>
+      <div class="metric-card"><span class="metric-num pink">35%</span><div class="metric-desc">Faster code reviews via LLM assistants</div></div>
+      <div class="metric-card"><span class="metric-num green">20+</span><div class="metric-desc">Airflow pipelines at 98%+ success rate</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">01.</div>
+      <div class="section-title">Technical Arsenal</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-category" onclick="openModal('modal-bi')">
+        <div class="skill-cat-title">BI & Visualization</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-cyan">Power BI</span>
+          <span class="skill-tag tag-cyan">DAX</span>
+          <span class="skill-tag tag-cyan">Power Query M</span>
+          <span class="skill-tag tag-cyan">Tableau</span>
+          <span class="skill-tag tag-cyan">Grafana</span>
+        </div>
+      </div>
+      <div class="skill-category" onclick="openModal('modal-db')">
+        <div class="skill-cat-title">Databases & Query</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-purple">Snowflake</span>
+          <span class="skill-tag tag-purple">SQL Server</span>
+          <span class="skill-tag tag-purple">MySQL</span>
+          <span class="skill-tag tag-purple">T-SQL</span>
+          <span class="skill-tag tag-purple">DAX</span>
+        </div>
+      </div>
+      <div class="skill-category" onclick="openModal('modal-etl')">
+        <div class="skill-cat-title">ETL & Data Engineering</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-green">Informatica</span>
+          <span class="skill-tag tag-green">Azure ADF</span>
+          <span class="skill-tag tag-green">Apache Airflow</span>
+          <span class="skill-tag tag-green">DBT</span>
+          <span class="skill-tag tag-green">Fivetran</span>
+          <span class="skill-tag tag-green">Control-M</span>
+        </div>
+      </div>
+      <div class="skill-category" onclick="openModal('modal-ai')">
+        <div class="skill-cat-title">AI & Generative AI</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-pink">LLMs</span>
+          <span class="skill-tag tag-pink">RAG Pipelines</span>
+          <span class="skill-tag tag-pink">Prompt Engineering</span>
+          <span class="skill-tag tag-pink">Databricks AI</span>
+          <span class="skill-tag tag-pink">Vector DBs</span>
+        </div>
+      </div>
+      <div class="skill-category" onclick="openModal('modal-py')">
+        <div class="skill-cat-title">Python & Data Science</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-gold">pandas</span>
+          <span class="skill-tag tag-gold">NumPy</span>
+          <span class="skill-tag tag-gold">scikit-learn</span>
+          <span class="skill-tag tag-gold">Matplotlib</span>
+          <span class="skill-tag tag-gold">Seaborn</span>
+          <span class="skill-tag tag-gold">MLflow</span>
+        </div>
+      </div>
+      <div class="skill-category" onclick="openModal('modal-cloud')">
+        <div class="skill-cat-title">Cloud & Monitoring</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-cyan">Microsoft Azure</span>
+          <span class="skill-tag tag-cyan">Databricks</span>
+          <span class="skill-tag tag-cyan">Splunk</span>
+          <span class="skill-tag tag-cyan">ServiceNow</span>
+          <span class="skill-tag tag-cyan">Jenkins</span>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);margin-top:1rem">[ CLICK ANY CATEGORY FOR DETAILS ]</p>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">02.</div>
+      <div class="section-title">Mission Log</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item" id="tl1">
+        <div class="timeline-dot"></div>
+        <div class="card">
+          <div class="exp-company">INFOSYS LTD — SENIOR SYSTEMS ENGINEER</div>
+          <div class="exp-role">Data Analyst & AI Practitioner</div>
+          <div class="exp-meta">MAR 2022 — PRESENT &nbsp;|&nbsp; HYDERABAD, INDIA</div>
+          <div>
+            <span class="exp-client" onclick="openModal('modal-bcg')" style="cursor:pointer">▸ BCG — Business Strategy</span>
+            <span class="exp-client" onclick="openModal('modal-massmutual')" style="cursor:pointer">▸ MassMutual — Financial Services</span>
+            <span class="exp-client" onclick="openModal('modal-tmobile')" style="cursor:pointer">▸ T-Mobile — Telecommunications</span>
+          </div>
+          <p style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted)">[ CLICK ANY CLIENT TO EXPAND FULL DETAILS ]</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">03.</div>
+      <div class="section-title">Special Operations</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card" onclick="openModal('modal-rag')">
+        <div class="project-title">RAG Incident Resolution Engine</div>
+        <div class="project-stack">
+          <span class="skill-tag tag-pink">Databricks</span>
+          <span class="skill-tag tag-purple">Vector Store</span>
+          <span class="skill-tag tag-cyan">Snowflake</span>
+          <span class="skill-tag tag-pink">LLM</span>
+        </div>
+        <div class="project-desc">AI-powered runbook retrieval system that auto-generates resolution steps during live pipeline failures.</div>
+        <div class="project-result">⚡ 45 min → under 10 min triage time</div>
+      </div>
+
+      <div class="project-card" onclick="openModal('modal-anomaly')">
+        <div class="project-title">Statistical Anomaly Detection Pipeline</div>
+        <div class="project-stack">
+          <span class="skill-tag tag-gold">Python</span>
+          <span class="skill-tag tag-gold">scikit-learn</span>
+          <span class="skill-tag tag-purple">Snowflake</span>
+        </div>
+        <div class="project-desc">Python-based data quality scoring using z-score and IQR outlier detection on Snowflake pipeline outputs.</div>
+        <div class="project-result">⚡ 40% fewer data quality incidents reaching BI</div>
+      </div>
+
+      <div class="project-card" onclick="openModal('modal-elt')">
+        <div class="project-title">Modern ELT Stack — BCG</div>
+        <div class="project-stack">
+          <span class="skill-tag tag-green">DBT</span>
+          <span class="skill-tag tag-green">Fivetran</span>
+          <span class="skill-tag tag-green">Airflow</span>
+          <span class="skill-tag tag-purple">Snowflake</span>
+        </div>
+        <div class="project-desc">End-to-end ELT architecture for BCG consulting analytics delivery with full data contract enforcement.</div>
+        <div class="project-result">⚡ 45% reduction in data-to-dashboard latency</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">04.</div>
+      <div class="section-title">Clearance Level</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card" onclick="openModal('modal-cert-databricks')">
+        <div class="cert-icon">🧠</div>
+        <div>
+          <div class="cert-name">Databricks Certified Generative AI Associate</div>
+          <div class="cert-issuer">Databricks Inc. &nbsp;|&nbsp; Issued 2024</div>
+          <div class="cert-badge">✓ VERIFIED</div>
+        </div>
+      </div>
+      <div class="cert-card" onclick="openModal('modal-cert-snowflake')">
+        <div class="cert-icon">❄️</div>
+        <div>
+          <div class="cert-name">SnowPro Core Certification (COF-C02)</div>
+          <div class="cert-issuer">Snowflake Inc.</div>
+          <div class="cert-badge">✓ VERIFIED</div>
+        </div>
+      </div>
+      <div class="cert-card" onclick="openModal('modal-cert-jira')">
+        <div class="cert-icon">⚙️</div>
+        <div>
+          <div class="cert-name">Atlassian Certified Jira Administrator (ACA-900)</div>
+          <div class="cert-issuer">Atlassian</div>
+          <div class="cert-badge">✓ VERIFIED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="border-top:1px solid var(--border)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">05.</div>
+      <div class="section-title">Open Channel</div>
+      <div class="section-line"></div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:1rem">HYDERABAD, TELANGANA, INDIA</div>
+      <div style="font-size:1.1rem;color:var(--text);margin-bottom:0.5rem">+91 9393557883</div>
+      <div style="font-size:1.1rem;color:var(--cyan)">jellarahulyadav1997@gmail.com</div>
+      <div class="contact-links">
+        <a href="https://linkedin.com/in/jella-rahulyadav-7222b323a" class="contact-link" target="_blank">[ LinkedIn ]</a>
+        <a href="mailto:jellarahulyadav1997@gmail.com" class="contact-link">[ Email ]</a>
+        <a href="https://github.com/jellarahulyadav" class="contact-link" target="_blank">[ GitHub ]</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Skills modals -->
+<div class="modal-overlay" id="modal-bi"><div class="modal">
+  <div class="modal-header"><div class="modal-title">BI & Visualization</div><button class="modal-close" onclick="closeModal('modal-bi')">✕</button></div>
+  <div class="modal-body">
+    <h3>Power BI</h3>
+    <p>Advanced Power BI Desktop and Service. Built real-time operational dashboards for T-Mobile leadership showing live pipeline health, SLA metrics, and data integrity. Used DirectQuery mode against Snowflake for live data without stale snapshots.</p>
+    <h3>DAX & Power Query M</h3>
+    <p>Wrote custom DAX measures for KPI calculations including MTD/YTD comparisons, pipeline success rates using DIVIDE() to avoid division-by-zero, and CALCULATE with date intelligence. Applied row-level security so each team lead viewed only their own pipeline data.</p>
+    <h3>Grafana</h3>
+    <p>Configured real-time Grafana dashboards with threshold-based alerting for pipeline lag, warehouse compute usage, and incident response SLAs at T-Mobile.</p>
+    <h3>Tableau</h3><p>Used for ad-hoc visual analytics and exploratory data storytelling across client datasets.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-db"><div class="modal">
+  <div class="modal-header"><div class="modal-title">Databases & Query</div><button class="modal-close" onclick="closeModal('modal-db')">✕</button></div>
+  <div class="modal-body">
+    <h3>Snowflake (Advanced)</h3>
+    <ul><li>RBAC design: functional roles vs access roles, least-privilege, schema-level permissions</li><li>Performance tuning: clustering keys, materialized views, Query Profile analysis, auto-scaling</li><li>Database cloning for dev/staging/prod isolation — 60% faster environment setup</li><li>Time Travel & Fail-safe for data recovery without source reloads</li><li>Streamlit in Snowflake for internal operational dashboards</li></ul>
+    <h3>SQL Server</h3>
+    <p>Advanced query optimisation at MassMutual — execution plan analysis, indexing strategy, query restructuring. Achieved 40% faster KPI report generation. T-SQL stored procedures and multi-dimensional data models for financial analytics.</p>
+    <h3>MySQL</h3><p>Relational schema design and query development for operational data stores.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-etl"><div class="modal">
+  <div class="modal-header"><div class="modal-title">ETL & Data Engineering</div><button class="modal-close" onclick="closeModal('modal-etl')">✕</button></div>
+  <div class="modal-body">
+    <h3>Apache Airflow</h3>
+    <p>Built and managed 20+ DAGs at BCG with 98%+ success rate. Used idempotent task design (MERGE over INSERT), SLA alerting, exponential backoff retries, on_failure_callback notifications, and Grafana trend monitoring.</p>
+    <h3>Informatica PowerCenter</h3>
+    <p>Designed end-to-end ETL pipelines at MassMutual processing 10M+ financial records daily across life insurance, retirement, and investment datasets with 99.9% data completeness.</p>
+    <h3>Azure Data Factory (ADF)</h3>
+    <p>Built and maintained ADF pipelines at T-Mobile. Diagnosed and fixed ETL bugs, applied performance tuning, and integrated with Snowflake for downstream analytics.</p>
+    <h3>DBT</h3>
+    <p>Modular transformation models in layers: sources → staging → intermediate → mart. Schema tests (not_null, unique, relationships) and custom singular tests for business rule enforcement. Auto-generated lineage and documentation.</p>
+    <h3>Fivetran & Control-M</h3>
+    <p>Managed Fivetran connectors for ingestion with schema drift monitoring. Control-M for enterprise job orchestration with dependency chains and SLA monitoring.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-ai"><div class="modal">
+  <div class="modal-header"><div class="modal-title">AI & Generative AI</div><button class="modal-close" onclick="closeModal('modal-ai')">✕</button></div>
+  <div class="modal-body">
+    <h3>RAG Pipelines</h3>
+    <p>Designed and deployed a Retrieval-Augmented Generation system on Databricks. Embedded 200+ Runbooks and RCA documents into a vector store. During live failures the pipeline retrieves context-matched resolution steps — cutting triage from 45 minutes to under 10 minutes.</p>
+    <h3>LLM Integration in Production</h3>
+    <ul><li>LLM-assisted SQL/Python/DBT code review — 35% faster review cycles</li><li>Auto-generated RCA reports from raw Splunk log dumps</li><li>Structured prompt templates for Runbook updates and DAG documentation</li><li>LLM-generated incident summaries fed into ServiceNow ticket creation</li></ul>
+    <h3>Anomaly Detection with AI</h3>
+    <p>Combined scikit-learn statistical models (z-score, IQR) with Databricks LLM layer to flag schema drift, null spikes, and outliers in Snowflake outputs before BI dashboards are impacted.</p>
+    <h3>Certification</h3>
+    <p>Databricks Certified Generative AI Associate — 2024. Covers LLM fundamentals, RAG architecture, prompt engineering, vector databases, and responsible AI deployment.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-py"><div class="modal">
+  <div class="modal-header"><div class="modal-title">Python & Data Science</div><button class="modal-close" onclick="closeModal('modal-py')">✕</button></div>
+  <div class="modal-body">
+    <h3>Data Analysis Stack</h3>
+    <p>pandas and NumPy for data manipulation at scale. Applied chunked reading, dtype downcasting, and vectorised operations for memory-efficient processing of large financial datasets at MassMutual.</p>
+    <h3>Machine Learning</h3>
+    <p>scikit-learn for production data quality scoring: z-score analysis and IQR outlier detection deployed on Snowflake pipeline outputs. Reduced downstream data quality incidents by 40%.</p>
+    <h3>Visualisation</h3>
+    <p>Matplotlib and Seaborn for EDA — correlation heatmaps, distribution analysis, feature drift detection on production datasets at BCG.</p>
+    <h3>MLflow</h3><p>Experiment tracking for data quality model iterations and anomaly detection threshold calibration.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-cloud"><div class="modal">
+  <div class="modal-header"><div class="modal-title">Cloud & Monitoring</div><button class="modal-close" onclick="closeModal('modal-cloud')">✕</button></div>
+  <div class="modal-body">
+    <h3>Microsoft Azure</h3>
+    <p>Azure Data Factory for ETL orchestration, Azure Synapse Analytics for data warehousing. Deep integration with Snowflake as the primary analytics layer at T-Mobile.</p>
+    <h3>Databricks Lakehouse</h3>
+    <p>Databricks for AI/ML workloads, RAG pipeline hosting, vector store management, and LLM integration. Used Unity Catalog for data governance.</p>
+    <h3>Splunk</h3>
+    <p>Log analysis and alerting at T-Mobile. Built RCA frameworks on Splunk query outputs. Reduced MTTR by 30% through structured triage templates derived from Splunk data.</p>
+    <h3>ServiceNow & ITSM</h3>
+    <p>Managed 50+ data platform incidents and change requests across SLA constraints. Integrated LLM-generated summaries into ServiceNow ticket creation for automated incident documentation.</p>
+  </div>
+</div></div>
+
+<!-- Client modals -->
+<div class="modal-overlay" id="modal-bcg"><div class="modal">
+  <div class="modal-header"><div class="modal-title">BCG — Boston Consulting Group</div><button class="modal-close" onclick="closeModal('modal-bcg')">✕</button></div>
+  <div class="modal-body">
+    <h3>Role & Stack</h3>
+    <p>Developer | SQL, Snowflake, DBT, Airflow, Fivetran, Python, AI Tools | Business Strategy Domain</p>
+    <h3>Key Deliverables</h3>
+    <ul>
+      <li>Provisioned 30+ users across 5+ Snowflake roles with least-privilege RBAC and schema-level permissions</li>
+      <li>Implemented database cloning for dev/staging/prod isolation — 60% faster environment setup</li>
+      <li>Built 20+ Airflow DAGs with SLA alerting and retry logic — 98%+ success rate</li>
+      <li>Integrated DBT + Fivetran + Airflow + Snowflake ELT stack — 45% faster data-to-insight</li>
+      <li>Applied LLM code assistants for SQL/Python/DBT review — 35% faster review cycles</li>
+      <li>Python EDA (pandas, NumPy, Matplotlib) on client datasets for strategy recommendations</li>
+      <li>Managed 50+ ServiceNow incidents within SLA constraints</li>
+    </ul>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-massmutual"><div class="modal">
+  <div class="modal-header"><div class="modal-title">MassMutual — Financial Services</div><button class="modal-close" onclick="closeModal('modal-massmutual')">✕</button></div>
+  <div class="modal-body">
+    <h3>Role & Stack</h3>
+    <p>Project Developer | Informatica PowerCenter, SQL Server, Jenkins, Airflow, Python, Jira | Financial Services Domain</p>
+    <h3>Key Deliverables</h3>
+    <ul>
+      <li>Engineered Informatica PowerCenter ETL pipelines — 10M+ financial records/day with 99.9% data completeness</li>
+      <li>Automated 15+ financial workflows using Jenkins and Airflow — 50% manual effort reduction</li>
+      <li>SQL execution plan analysis, indexing, query restructuring — 40% faster KPI report generation</li>
+      <li>scikit-learn z-score and IQR outlier detection — 30% fewer downstream data quality incidents</li>
+      <li>Agile delivery (Jira + Confluence) with Runbooks and data flow diagrams for 10+ ETL workflows</li>
+    </ul>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-tmobile"><div class="modal">
+  <div class="modal-header"><div class="modal-title">T-Mobile — Telecommunications</div><button class="modal-close" onclick="closeModal('modal-tmobile')">✕</button></div>
+  <div class="modal-body">
+    <h3>Role & Stack</h3>
+    <p>Data Operations | Azure Data Factory, Snowflake, Splunk, Grafana, Control-M, Power BI, Databricks | Telecom Domain</p>
+    <h3>Key Deliverables</h3>
+    <ul>
+      <li>99.9% pipeline uptime via Splunk + Grafana monitoring + Control-M orchestration — 50+ incidents resolved proactively</li>
+      <li>30% MTTR reduction via Splunk RCA frameworks and reusable resolution templates</li>
+      <li>Databricks AI + scikit-learn anomaly detection on Snowflake outputs — schema drift and null spike early warning</li>
+      <li>Clustering keys, materialized views, ADF ETL tuning — 35% faster Snowflake query performance</li>
+      <li>Power BI + Grafana real-time dashboards with custom DAX measures for T-Mobile leadership</li>
+    </ul>
+  </div>
+</div></div>
+
+<!-- Project modals -->
+<div class="modal-overlay" id="modal-rag"><div class="modal">
+  <div class="modal-header"><div class="modal-title">RAG Incident Resolution Engine</div><button class="modal-close" onclick="closeModal('modal-rag')">✕</button></div>
+  <div class="modal-body">
+    <h3>Problem</h3>
+    <p>The operations team was spending ~45 minutes per incident manually reading through hundreds of Runbooks to find the right resolution steps — during live production failures where every minute matters.</p>
+    <h3>Solution</h3>
+    <p>Built a Retrieval-Augmented Generation (RAG) pipeline on Databricks. Embedded 200+ historical Runbooks and RCA documents into a vector store. During live failures, the pipeline semantically retrieves the top matching resolution steps and presents them automatically.</p>
+    <h3>Additional Integration</h3>
+    <p>LLM-generated incident summaries from Splunk log dumps are automatically injected into ServiceNow ticket creation — eliminating manual log-reading and accelerating stakeholder communication.</p>
+    <h3>Result</h3>
+    <p style="color:var(--green)">Triage time: 45 minutes → under 10 minutes. 40% improvement in incident resolution speed.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-anomaly"><div class="modal">
+  <div class="modal-header"><div class="modal-title">Statistical Anomaly Detection Pipeline</div><button class="modal-close" onclick="closeModal('modal-anomaly')">✕</button></div>
+  <div class="modal-body">
+    <h3>Problem</h3>
+    <p>Data quality issues in Snowflake pipeline outputs — schema drift, null spikes, statistical outliers — were reaching Power BI dashboards and causing incorrect metrics for business stakeholders.</p>
+    <h3>Solution</h3>
+    <p>Built a Python-based data quality scoring layer using scikit-learn. Applied z-score analysis (for normally distributed metrics) and IQR outlier detection (for skewed financial data). The scoring layer runs on every pipeline load before data reaches the BI layer.</p>
+    <h3>EDA Component</h3>
+    <p>Full EDA workflow: pandas profiling, Seaborn correlation heatmaps, distribution analysis — used to characterise production dataset behaviour and set calibrated thresholds per metric.</p>
+    <h3>Result</h3>
+    <p style="color:var(--green)">40% reduction in data quality incidents reaching BI consumers.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-elt"><div class="modal">
+  <div class="modal-header"><div class="modal-title">Modern ELT Stack — BCG</div><button class="modal-close" onclick="closeModal('modal-elt')">✕</button></div>
+  <div class="modal-body">
+    <h3>Architecture</h3>
+    <p>Fivetran (ingestion) → Snowflake (raw storage) → DBT (transformation) → Airflow (orchestration) → Power BI (consumption)</p>
+    <h3>DBT Layer</h3>
+    <p>Modular model layers: sources → staging → intermediate → mart. Schema tests for data contract enforcement. Singular tests for business logic validation. Auto-generated documentation and lineage.</p>
+    <h3>Environment Management</h3>
+    <p>Snowflake database cloning for safe dev/staging/prod separation. Schema-level RBAC to protect production data during iterative development cycles.</p>
+    <h3>Result</h3>
+    <p style="color:var(--green)">45% reduction in data-to-dashboard latency for BCG consulting delivery teams.</p>
+  </div>
+</div></div>
+
+<!-- Cert modals -->
+<div class="modal-overlay" id="modal-cert-databricks"><div class="modal">
+  <div class="modal-header"><div class="modal-title">Databricks GenAI Associate</div><button class="modal-close" onclick="closeModal('modal-cert-databricks')">✕</button></div>
+  <div class="modal-body">
+    <h3>Certification Details</h3>
+    <p>Databricks Certified Generative AI Associate | Issued: 2024 | Databricks Inc.</p>
+    <h3>Domains Covered</h3>
+    <ul>
+      <li>Large Language Model (LLM) fundamentals and architecture</li>
+      <li>Retrieval-Augmented Generation (RAG) design and implementation</li>
+      <li>Prompt engineering techniques and best practices</li>
+      <li>Vector databases and embedding models</li>
+      <li>Responsible AI and production deployment patterns</li>
+      <li>Databricks AI/ML platform and MLflow integration</li>
+    </ul>
+    <h3>Applied In Production</h3>
+    <p>RAG incident resolution engine, LLM-assisted code review, automated RCA report generation from Splunk logs, AI anomaly detection on Snowflake pipeline outputs.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-cert-snowflake"><div class="modal">
+  <div class="modal-header"><div class="modal-title">SnowPro Core (COF-C02)</div><button class="modal-close" onclick="closeModal('modal-cert-snowflake')">✕</button></div>
+  <div class="modal-body">
+    <h3>Certification Details</h3>
+    <p>SnowPro Core Certification (COF-C02) | Snowflake Inc.</p>
+    <h3>Domains Covered</h3>
+    <ul>
+      <li>Snowflake architecture: storage, compute, services layers</li>
+      <li>Virtual warehouse management and multi-cluster scaling</li>
+      <li>Role-based access control (RBAC) design</li>
+      <li>Query performance tuning and clustering keys</li>
+      <li>Data sharing and replication</li>
+      <li>Time Travel, Fail-safe, and data recovery</li>
+      <li>Semi-structured data (JSON, Parquet) handling</li>
+    </ul>
+    <h3>Applied In Production</h3>
+    <p>RBAC for 30+ BCG users, clustering key optimisation at T-Mobile (35% query improvement), database cloning for environment isolation, Time Travel for production data recovery.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-cert-jira"><div class="modal">
+  <div class="modal-header"><div class="modal-title">Atlassian ACA-900 — Jira Admin</div><button class="modal-close" onclick="closeModal('modal-cert-jira')">✕</button></div>
+  <div class="modal-body">
+    <h3>Certification Details</h3>
+    <p>Atlassian Certified in Jira Administration (ACA-900) | Atlassian</p>
+    <h3>Domains Covered</h3>
+    <ul>
+      <li>Jira project configuration and workflow design</li>
+      <li>Permission schemes and role management</li>
+      <li>Board configuration (Scrum and Kanban)</li>
+      <li>Reporting and dashboard creation</li>
+      <li>Integration with Confluence for documentation</li>
+    </ul>
+    <h3>Applied In Production</h3>
+    <p>Managed Agile sprint delivery at MassMutual using Jira + Confluence. Authored Runbooks, data flow diagrams, and test scripts across 10+ ETL workflows within sprint cycles.</p>
+  </div>
+</div></div>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 80);
+});
+document.querySelectorAll('a,button,.skill-category,.cert-card,.project-card,.exp-client').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.transform = 'translate(-50%,-50%) scale(1.6)';
+    ring.style.borderColor = 'var(--pink)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.borderColor = 'var(--cyan)';
+  });
+});
+
+// Particles
+function makeParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 15) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.opacity = Math.random() * 0.5;
+    if (Math.random() > 0.7) p.style.background = 'var(--gold)';
+    if (Math.random() > 0.85) p.style.background = 'var(--pink)';
+    container.appendChild(p);
+  }
+}
+makeParticles();
+
+// Modal functions
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    document.body.style.overflow = '';
+  }
+});
+
+// Timeline intersection observer
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
